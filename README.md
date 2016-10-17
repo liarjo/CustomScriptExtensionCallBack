@@ -15,4 +15,5 @@ Template’s objective is send a HTTP callback notification every time your temp
 ##How this template works
 
 This template use [Custom Script extension](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-extensions-customscript/) to call a target URL and pass Azure subscription ID as parameter, in this way every time this template is deployed you will receive a notification with the target subscription’s ID.
+
 The template use a PowerShell script, it is how receive the subscription ID from the ARM on deployment process and execute the HTTP callback.
