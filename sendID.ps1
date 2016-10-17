@@ -1,8 +1,9 @@
-
 Param(
 [Parameter(Mandatory=$true)]
 [string] $subId
 )
 
-$target="https://jpggindonesia.azurewebsites.net/api/zerto?code=kz42t7k2csaod9o93wb0bjtxpanoheu9l1oq&subid={0}" -f $subId
+#Sample URL Target Callback with subsdcription ID as a parameter
+$target="http://www.bing.com/search?q={0}" -f $subId 
+
 Invoke-WebRequest -Uri $target
