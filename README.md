@@ -17,3 +17,30 @@ Template’s objective is send a HTTP callback notification every time your temp
 This template use [Custom Script extension](https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-windows-extensions-customscript/) to call a target URL and pass Azure subscription ID as parameter, in this way every time this template is deployed you will receive a notification with the target subscription’s ID.
 
 The template use a PowerShell script, it is how receive the subscription ID from the ARM on deployment process and execute the HTTP callback.
+
+The template key is the CustomScriptExtension resource, where the script receive and pass parameter using ARM template function **subscription().subscriptionId** and concatenate it like a parameter value.
+
+
+```json
+{
+          "type": "extensions",
+          "name": "CustomScriptExtension",
+          "apiVersion": "2015-05-01-preview",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[variables('vmName')]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "[concat(parameters('_artifactsLocation'), '/', variables('ScriptFolder'), '/', variables('ScriptFileName'), parameters('_artifactsLocationSasToken'))]"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('ScriptFolder'), '/', variables('ScriptFileName'), ' -subID ', subscription().subscriptionId)]"
+            }
+          }
+        }
+```
